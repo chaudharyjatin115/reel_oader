@@ -62,6 +62,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_insta:
+    dependency: "direct main"
+    description:
+      name: flutter_insta
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -88,13 +95,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  instagram_public_api:
-    dependency: "direct main"
-    description:
-      name: instagram_public_api
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.3"
   lints:
     dependency: transitive
     description:
@@ -186,4 +186,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=2.14.0 <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=1.20.0"
