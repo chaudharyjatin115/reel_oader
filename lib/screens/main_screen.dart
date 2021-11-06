@@ -1,3 +1,6 @@
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_insta/flutter_insta.dart';
@@ -10,12 +13,6 @@ class MainScreen extends StatefulWidget {
 }
 
 final controller = TextEditingController();
-void initializeDownloader() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(
-      debug: true // optional: set false to disable printing logs to console
-      );
-}
 
 class _MainScreenState extends State<MainScreen> {
   @override
@@ -23,6 +20,22 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     initializeDownloader();
+  }
+
+  void initializeDownloader() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await FlutterDownloader.initialize(
+        debug: true // ,optional: set false to disable printing logs to console
+
+        );
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
+    send!.send([id, status, progress]);
   }
 
   @override
