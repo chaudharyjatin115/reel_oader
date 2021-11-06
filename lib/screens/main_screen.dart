@@ -71,6 +71,7 @@ void downloadReels(String link) async {
 
   await FlutterDownloader.enqueue(
           url: '$s',
+          saveInPublicStorage: true,
           savedDir: '/sdcard/Download',
           showNotification: true,
           openFileFromNotification: true)
