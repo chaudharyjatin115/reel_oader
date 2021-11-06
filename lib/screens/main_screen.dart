@@ -27,8 +27,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Reeloader'),
       ),
       body: SafeArea(
@@ -41,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
             TextButton(
               child: const Text('Download'),
               onPressed: () {
-                downloadReels(controller.value.toString());
+                downloadReels(controller.text);
               },
             )
           ],
@@ -52,6 +54,16 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 void downloadReels(String link) async {
-  var s = await FlutterInsta().downloadReels("$link");
-  print(s);
+  var s = await FlutterInsta().downloadReels(link);
+
+  await FlutterDownloader.enqueue(
+          url: '$s',
+          savedDir: '/sdcard/Download',
+          showNotification: true,
+          openFileFromNotification: true)
+      .whenComplete(() => () {
+            // ignore: avoid_print
+            print('hello');
+            // ignore: avoid_print
+          });
 }
