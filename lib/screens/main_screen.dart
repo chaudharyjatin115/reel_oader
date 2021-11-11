@@ -54,10 +54,12 @@ class _MainScreenState extends State<MainScreen> {
               child: const Text('Download'),
               onPressed: () async {
                 final status = await Permission.storage.request();
-                if (status.isGranted) {
+                if (status.isGranted && controller.value != null) {
                   downloadReels(controller.text);
                 } else {
-                  print("Permission denied");
+                  const SnackBar(
+                    content: Text('error'),
+                  );
                 }
               },
             )
