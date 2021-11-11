@@ -37,7 +37,6 @@ dependencies:
   flutter_insta: ^1.0.0
   flutter_downloader: ^1.7.1
   permission_handler: ^8.2.6
-  dio: ^4.0.1
 
 dev_dependencies:
   flutter_test:
