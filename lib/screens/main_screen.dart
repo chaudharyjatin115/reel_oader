@@ -1,9 +1,12 @@
+// ignore_for_file: await_only_futures
+
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_insta/flutter_insta.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -18,16 +21,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-
     initializeDownloader();
   }
 
   void initializeDownloader() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await FlutterDownloader.initialize(
-        debug: true // ,optional: set false to disable printing logs to console
-
-        );
     FlutterDownloader.registerCallback(downloadCallback);
   }
 
@@ -55,8 +52,13 @@ class _MainScreenState extends State<MainScreen> {
             ),
             TextButton(
               child: const Text('Download'),
-              onPressed: () {
-                downloadReels(controller.text);
+              onPressed: () async {
+                final status = await Permission.storage.request();
+                if (status.isGranted) {
+                  downloadReels(controller.text);
+                } else {
+                  print("Permission denied");
+                }
               },
             )
           ],
@@ -72,12 +74,12 @@ void downloadReels(String link) async {
   await FlutterDownloader.enqueue(
           url: '$s',
           saveInPublicStorage: true,
-          savedDir: '/sdcard/Download',
+          savedDir: '/sdcard/download',
           showNotification: true,
           openFileFromNotification: true)
       .whenComplete(() => () {
             // ignore: avoid_print
-            print('hello');
+            print('download completed');
             // ignore: avoid_print
           });
 }
