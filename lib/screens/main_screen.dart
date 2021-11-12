@@ -5,8 +5,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_insta/flutter_insta.dart';
+
 import 'package:permission_handler/permission_handler.dart';
+import 'package:reel_oader/repositories/link_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -67,25 +68,5 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
-  }
-}
-
-void downloadReels(String link) async {
-  try {
-    var s = await FlutterInsta().downloadReels(link);
-
-    await FlutterDownloader.enqueue(
-            url: '$s',
-            saveInPublicStorage: true,
-            savedDir: '/sdcard/download',
-            showNotification: true,
-            openFileFromNotification: true)
-        .whenComplete(() => () {
-              // ignore: avoid_print
-              print('download completed');
-              // ignore: avoid_print
-            });
-  } catch (e) {
-    const SnackBar(content: const Text('some error'));
   }
 }
