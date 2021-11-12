@@ -71,17 +71,21 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 void downloadReels(String link) async {
-  var s = await FlutterInsta().downloadReels(link);
+  try {
+    var s = await FlutterInsta().downloadReels(link);
 
-  await FlutterDownloader.enqueue(
-          url: '$s',
-          saveInPublicStorage: true,
-          savedDir: '/sdcard/download',
-          showNotification: true,
-          openFileFromNotification: true)
-      .whenComplete(() => () {
-            // ignore: avoid_print
-            print('download completed');
-            // ignore: avoid_print
-          });
+    await FlutterDownloader.enqueue(
+            url: '$s',
+            saveInPublicStorage: true,
+            savedDir: '/sdcard/download',
+            showNotification: true,
+            openFileFromNotification: true)
+        .whenComplete(() => () {
+              // ignore: avoid_print
+              print('download completed');
+              // ignore: avoid_print
+            });
+  } catch (e) {
+    const SnackBar(content: const Text('some error'));
+  }
 }
